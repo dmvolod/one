@@ -19,9 +19,9 @@ package goca
 import (
 	"context"
 	"encoding/xml"
-	"errors"
 	"fmt"
 
+	"github.com/OpenNebula/one/src/oca/go/src/goca/errors"
 	"github.com/OpenNebula/one/src/oca/go/src/goca/parameters"
 	"github.com/OpenNebula/one/src/oca/go/src/goca/schemas/shared"
 	"github.com/OpenNebula/one/src/oca/go/src/goca/schemas/vm"
@@ -72,13 +72,13 @@ func (c *VMsController) ByNameContext(ctx context.Context, name string, args ...
 			continue
 		}
 		if match {
-			return -1, errors.New("multiple resources with that name")
+			return -1, errors.MultipleResourcesFound
 		}
 		id = vmPool.VMs[i].ID
 		match = true
 	}
 	if !match {
-		return -1, errors.New("resource not found")
+		return -1, errors.ResourceNotFound
 	}
 
 	return id, err

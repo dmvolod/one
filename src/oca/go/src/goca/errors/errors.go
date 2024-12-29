@@ -17,6 +17,7 @@
 package errors
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -177,3 +178,12 @@ type ResponseError struct {
 func (e *ResponseError) Error() string {
 	return fmt.Sprintf("OpenNebula error [%s]: %s", e.Code.String(), e.Msg)
 }
+
+// API functions errors
+
+var (
+	// ResourceNotFound error returns, when resource is not found in the list by the given name
+	ResourceNotFound = errors.New("resource not found")
+	// MultipleResourcesFound error returns, when multiple resources with the given name are found
+	MultipleResourcesFound = errors.New("multiple resources with that name")
+)
