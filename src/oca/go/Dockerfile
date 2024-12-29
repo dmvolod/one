@@ -18,6 +18,13 @@ baseurl  = https://downloads.opennebula.io/repo/6.10/RedHat/9/$basearch/ \n\
 enabled  = 1 \n\
 gpgcheck = 0' > etc/yum.repos.d/opennebula.repo
 
+RUN echo $'[baseos] \n\
+name      = CentOS Stream $releasever - BaseOS \n\
+#metalink = https://mirrors.centos.org/metalink?repo=centos-baseos-$stream&arch=$basearch&protocol=https,http \n\
+baseurl   = https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os \n\
+enabled   = 1 \n\
+gpgcheck  = 0' > etc/yum.repos.d/centos9-baseos.repo
+
 RUN echo $'[appstream] \n\
 name      = CentOS Stream $releasever - AppStream \n\
 #metalink = https://mirrors.centos.org/metalink?repo=centos-appstream-$stream&arch=$basearch&protocol=https,http \n\
@@ -25,7 +32,7 @@ baseurl   = https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os \n\
 enabled   = 1 \n\
 gpgcheck  = 0' > etc/yum.repos.d/centos9-appstream.repo
 
-RUN dnf install xmlrpc-c freerdp-libs net-tools qemu-img mysql-community-client genisoimage opennebula opennebula-sunstone opennebula-rubygems opennebula-fireedge opennebula-gate opennebula-flow opennebula-guacd rubygem-json -y
+RUN dnf install net-tools genisoimage opennebula opennebula-sunstone opennebula-node-kvm opennebula-rubygems opennebula-fireedge opennebula-gate opennebula-flow opennebula-guacd rubygem-json -y
 
 RUN mkdir -p /root/.one && echo "oneadmin:opennebula" > /root/.one/one_auth
 RUN echo 'IM_MAD = [ NAME="dummy", SUNSTONE_NAME="Dummy", EXECUTABLE="one_im_sh", ARGUMENTS="-r 3 -t 15 -w 90 dummy"]' >> /etc/one/monitord.conf
@@ -34,3 +41,4 @@ RUN echo 'VM_MAD = [ NAME="dummy", SUNSTONE_NAME="Testing", EXECUTABLE="one_vmm_
 EXPOSE 9869
 EXPOSE 2633
 EXPOSE 2474
+EXPOSE 2616

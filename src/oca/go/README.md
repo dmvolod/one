@@ -1,8 +1,10 @@
 # Quick Start Guide
 ## Build
 
+https://gist.github.com/mackmoe/6f8abafeeea71858d4c0385af8c6c0d0
+
 docker build . -t opennebula
-docker run -d -p 9869:9869 -p 2633:2633 -p 2474:2474 opennebula /bin/bash -c "one start; sunstone-server start; sleep infinity"
+docker run -d -p 9869:9869 -p 2633:2633 -p 2474:2474 -p 2616:2616 opennebula /bin/bash -c "one start; sunstone-server start; oneflow-server start; onegate-server start; fireedge-server start; sleep infinity"
 docker exec -it e71d5e98f9ef /bin/bash
 
 tail -f /var/log/one/oned.log
