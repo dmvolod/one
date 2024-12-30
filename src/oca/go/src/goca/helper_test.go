@@ -25,8 +25,8 @@ import (
 	"time"
 )
 
-var testClient = NewDefaultClient(NewConfig("oneadmin", "opennebula", ""))
-var testClientFlow = NewDefaultFlowClient(NewFlowConfig("oneadmin", "opennebula", ""))
+var testClient = NewDefaultClient(NewConfig("", "", ""))
+var testClientFlow = NewDefaultFlowClient(NewFlowConfig("", "", ""))
 var testCtrl = NewGenericController(testClient, testClientFlow)
 
 // Appends a random string to a name
