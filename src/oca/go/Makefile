@@ -1,4 +1,6 @@
 IMG ?= opennebula4test
+CONTAINER ?= opennebula4test
+CONTAINER_START_TIMEOUT ?= 10
 
 # CONTAINER_TOOL defines the container tool to be used for building images.
 # Be aware that the target commands are only tested with Docker which is
@@ -34,10 +36,15 @@ help: ## Display this help.
 test: ## Run tests.
 	ONE_AUTH=$(PWD)/one_auth go test -C ./src/goca -v
 
-.PHONY: test-with-docker
-test-with-docker: ## Run tests within docker image.
-	go test -C ./src/goca -v
+.PHONY: test-with-container
+test-with-container: test-image-build ## Run tests within OpenNebula container image.
+	$(CONTAINER_TOOL) rm ${CONTAINER} --force
+	$(CONTAINER_TOOL) run -d --name ${CONTAINER} -p 9869:9869 -p 2633:2633 -p 2474:2474 -p 2616:2616 ${IMG} /bin/bash -c "one start; sunstone-server start; oneflow-server start; onegate-server start; fireedge-server start; sleep infinity"
+	curl --head -X GET --retry ${CONTAINER_START_TIMEOUT} --retry-all-errors --retry-delay 1 localhost:2633
+	curl --head -X GET --retry ${CONTAINER_START_TIMEOUT} --retry-all-errors --retry-delay 1 localhost:2474
+	make test
+	$(CONTAINER_TOOL) rm ${CONTAINER} --force
 
-.PHONY: docker-build
+.PHONY: test-image-build
 test-image-build: ## Build docker image with the OpenNebula binaries for tests.
 	$(CONTAINER_TOOL) build -t ${IMG} .
