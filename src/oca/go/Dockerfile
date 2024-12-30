@@ -34,9 +34,12 @@ gpgcheck  = 0' > etc/yum.repos.d/centos9-appstream.repo
 
 RUN dnf install net-tools genisoimage opennebula opennebula-sunstone opennebula-node-kvm opennebula-rubygems opennebula-fireedge opennebula-gate opennebula-flow opennebula-guacd rubygem-json -y
 
+# RUN curl -O https://github.com/OpenNebula/addon-appmarket/releases/download/release-2.1.0/appmarket_2.1.0.rpm && dnf localinstall appmarket_2.1.0.rpm -y
+
 RUN mkdir -p /root/.one && echo "oneadmin:opennebula" > /root/.one/one_auth
 RUN echo 'IM_MAD = [ NAME="dummy", SUNSTONE_NAME="Dummy", EXECUTABLE="one_im_sh", ARGUMENTS="-r 3 -t 15 -w 90 dummy"]' >> /etc/one/monitord.conf
 RUN echo 'VM_MAD = [ NAME="dummy", SUNSTONE_NAME="Testing", EXECUTABLE="one_vmm_dummy",TYPE="xml" ]' >> /etc/one/oned.conf
+RUN sed -i -e "s/127.0.0.1/0.0.0.0/g" /etc/one/oneflow-server.conf
 
 EXPOSE 9869
 EXPOSE 2633
