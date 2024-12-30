@@ -59,6 +59,9 @@ func (s *VMSuite) SetUpSuite(c *C) {
 	s.templateID = templateID
 
 	s.hostID, _ = testCtrl.Hosts().Create("dummy-test", "dummy", "dummy", 0)
+	if s.hostID == -1 {
+		s.hostID, _ = testCtrl.Hosts().ByName("dummy-test")
+	}
 
 	tmpl := ds.NewTemplate()
 	tmpl.Add(dskeys.TMMAD, "dummy")
