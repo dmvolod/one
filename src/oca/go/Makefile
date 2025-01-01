@@ -41,7 +41,7 @@ test-with-container: test-image-build remove-test-container ## Run tests within 
 	$(CONTAINER_TOOL) run -d --name ${CONTAINER} -p 9869:9869 -p 2633:2633 -p 2474:2474 -p 2616:2616 ${IMG} /bin/bash -c "one start; sunstone-server start; oneflow-server start; onegate-server start; fireedge-server start; sleep infinity"
 	curl --head -X GET --retry ${CONTAINER_START_TIMEOUT} --retry-all-errors --retry-delay 1 localhost:2633
 	curl --head -X GET --retry ${CONTAINER_START_TIMEOUT} --retry-all-errors --retry-delay 1 localhost:2474
-	make test remove-test-container
+	make test || make remove-test-container
 
 .PHONY: remove-test-container
 remove-test-container: ## Remove running OpenNebula test image.
